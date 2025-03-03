@@ -162,6 +162,7 @@
             if (e.key === " ") {
                 for (const item of items) {
                     item.cache.pause();
+                    item.cache.currentTime = 0;
                 }
 
                 let actives = document.querySelectorAll("[data-active]");
@@ -202,6 +203,13 @@
 
                 if (duration <= 0) {
                     delete active.dataset.active;
+                    let name = active.querySelector(".name").toLowerCase();
+
+                    for (const item of items) {
+                        if (item.name == name) {
+                            item.cache.currentTime = 0;
+                        }
+                    }
                 } else {
                     active.dataset.active = duration;
                 }
