@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Soundboard</title>
     <style>
+        div {
+            display: inline-block;
+        }
+
         body {
             font-family: sans-serif;
             font-size: 1.25rem;
@@ -15,8 +19,7 @@
 
         #items {
             display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
+            flex-wrap: wrap;
         }
 
         .item {
@@ -28,6 +31,7 @@
             font-weight: bold;
             cursor: pointer;
             border-radius: 2rem;
+            width: 30rem;
         }
 
         .item[data-active] .icon {
@@ -67,8 +71,8 @@
         }
 
         .icon {
-            width: 6rem;
-            height: 6rem;
+            min-width: 6rem;
+            min-height: 6rem;
             background-size: cover;
             border-radius: 1rem;
             background-color: #ccc;
@@ -101,6 +105,13 @@
             { name: "yippie", cache: null },
             { name: "elevator", cache: null },
             { name: "illuminati", cache: null },
+            { name: "betalen pannenkoek", cache: null },
+            { name: "dat is niet hoe het werkt", cache: null },
+            { name: "mario dies", cache: null },
+            { name: "mario", cache: null },
+            { name: "omg", cache: null },
+            { name: "omg2", cache: null },
+            { name: "toad", cache: null },
         ];
 
         let keys = Array.from("1234567890qwertyuiopasdfghjklzxcvbnm");
@@ -113,9 +124,11 @@
             itemEl.querySelector(".icon").style.backgroundImage = `url('${items[i].name}.jpg')`;
 
             items[i].cache = new Audio(items[i].name + ".mp3")
+            items[i].cache.preload = "auto";
             items[i].cache.addEventListener("error", e => {
                 items[i].el.querySelector(".name").innerText += " [AUDIO NOT FOUND]";
             })
+            items[i].cache.load();
             items[i].el = itemEl.querySelector(".item");
 
             itemEl.querySelector(".item").addEventListener("click", function (e) {
