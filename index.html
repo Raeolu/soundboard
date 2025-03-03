@@ -98,22 +98,24 @@
         let itemsEl = document.querySelector("#items");
 
         let items = [
-            { name: "gaan we niet doen", cache: null },
-            { name: "meow", cache: null },
-            { name: "cupcakke siren", cache: null },
-            { name: "vine boom", cache: null },
-            { name: "yippie", cache: null },
-            { name: "elevator", cache: null },
-            { name: "illuminati", cache: null },
-            { name: "betalen pannenkoek", cache: null },
-            { name: "dat is niet hoe het werkt", cache: null },
-            { name: "mario dies", cache: null },
-            { name: "mario", cache: null },
-            { name: "omg", cache: null },
-            { name: "omg2", cache: null },
-            { name: "toad", cache: null },
-            { name: "ara ara", cache: null },
-            { name: "onii chan", cache: null },
+            { name: "gaan we niet doen", cache: null, vol: 1.0 },
+            { name: "meow", cache: null, vol: 1.0 },
+            { name: "cupcakke siren", cache: null, vol: 1.0 },
+            { name: "vine boom", cache: null, vol: 1.0 },
+            { name: "yippie", cache: null, vol: .4 },
+            { name: "elevator", cache: null, vol: 1.0 },
+            { name: "illuminati", cache: null, vol: 1.0 },
+            { name: "betalen pannenkoek", cache: null, vol: 1.0 },
+            { name: "dat is niet hoe het werkt", cache: null, vol: 1.0 },
+            { name: "dat is wel hoe het werkt", cache: null, vol: 1.0 },
+            { name: "oke lets go", cache: null, vol: 1.0 },
+            { name: "mario dies", cache: null, vol: 1.0 },
+            { name: "mario", cache: null, vol: 1.0 },
+            { name: "omg", cache: null, vol: 1.0 },
+            { name: "omg2", cache: null, vol: 1.0 },
+            { name: "toad", cache: null, vol: 1.0 },
+            { name: "ara ara", cache: null, vol: 1.0 },
+            { name: "onii chan", cache: null, vol: 1.0 },
         ];
 
         let keys = Array.from("1234567890qwertyuiopasdfghjklzxcvbnm");
@@ -126,11 +128,13 @@
             itemEl.querySelector(".icon").style.backgroundImage = `url('${items[i].name}.jpg')`;
 
             items[i].cache = new Audio(items[i].name + ".mp3")
+            items[i].cache.volume = items[i].vol;
             items[i].cache.preload = "auto";
             items[i].cache.addEventListener("error", e => {
                 items[i].el.querySelector(".name").innerText += " [AUDIO NOT FOUND]";
             })
             items[i].cache.load();
+
             items[i].el = itemEl.querySelector(".item");
 
             itemEl.querySelector(".item").addEventListener("click", function (e) {
@@ -140,7 +144,20 @@
             itemsEl.appendChild(itemEl);
         }
 
+        let loaded = false;
+
         window.addEventListener("keydown", e => {
+            if (!loaded) {
+                loaded = true;
+
+                for (const item of items) {
+                    item.cache.volume = 0.01;
+                    item.cache.play();
+                    item.cache.pause();
+                    item.cache.volume = item.vol;
+                }
+            }
+
             console.log(e.key)
             if (e.key === " ") {
                 for (const item of items) {
